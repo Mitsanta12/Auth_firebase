@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Profile from './Profile'
 import Register from './Register'
 import VerifyEmail from './VerifyEmail';
+import Login from './Login'
 import {AuthProvider} from './AuthContext'
 import {auth} from './firebase'
 import {onAuthStateChanged} from 'firebase/auth'
@@ -35,7 +36,12 @@ function App() {
         </PrivateRoute>
       }/>
       {/* Route pour la page de connexion */}
- 
+      <Route path="/login" element={
+        // Vérifie si l'utilisateur est connecté et a vérifié son email, sinon redirige vers la page d'accueil
+        !currentUser?.emailVerified 
+          ? <Login/> // Composant de la page de connexion
+          : <Navigate to='/' replace/> // Redirection vers la page d'accueil
+      } />
       {/* Route pour la page d'inscription */}
       <Route path="/register" element={
         // Vérifie si l'utilisateur est connecté et a vérifié son email, sinon redirige vers la page d'accueil
